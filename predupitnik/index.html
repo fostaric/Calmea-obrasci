@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="hr"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2F5D50">
+<meta name="robots" content="noindex">
+<title>Calmea — upitnik prije obilaska</title>
+<style>
+:root{--g:#2F5D50;--g2:#EEF4F1;--bd:#cfd8d4;--tx:#1d2622;--mu:#5b6b65;--bg:#f6f8f7;--card:#fff;--warn:#b3261e}
+@media (prefers-color-scheme:dark){:root{--g2:#1f2e29;--bd:#34433e;--tx:#e6ece9;--mu:#9fb0a9;--bg:#121816;--card:#1a2220}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.45 -apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx);padding-bottom:84px}
+header{position:sticky;top:0;z-index:5;background:var(--g);color:#fff;padding:10px 16px}
+header .t{font-weight:700;font-size:17px}
+header .s{font-size:13px;opacity:.85}
+main{padding:12px 16px;max-width:760px;margin:0 auto;min-width:0;overflow-wrap:anywhere}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:10px;margin:0 0 10px;overflow:hidden}
+.pad{padding:14px 16px}
+h1{font-size:20px;color:var(--g);margin:4px 0 8px}
+details>summary{list-style:none;padding:13px 14px;font-weight:700;display:flex;justify-content:space-between;gap:8px;cursor:pointer}
+details>summary::-webkit-details-marker{display:none}
+summary .cnt{font-weight:400;font-size:13px;color:var(--mu);white-space:nowrap}
+details[open]>summary{border-bottom:1px solid var(--bd);background:var(--g2)}
+.body{padding:6px 14px 12px}
+.uvod{font-size:14px;color:var(--mu);padding:8px 0 2px}
+.q{padding:10px 0;border-bottom:1px solid var(--bd)}
+.q:last-child{border-bottom:0}
+.q label.ql{display:block;font-weight:600;margin-bottom:6px}
+.pair{display:flex;gap:12px;border-bottom:1px solid var(--bd)}
+.pair>.q{flex:1;min-width:0;border-bottom:0}
+.ex{font-size:12.5px;color:var(--mu);margin-top:3px}
+.nap{font-size:13px;margin-top:6px;padding:7px 9px;border-radius:6px;background:var(--g2)}
+input[type=text],input[type=number],textarea,select{width:100%;font:inherit;padding:10px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--tx)}
+textarea{min-height:76px;resize:vertical}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--bd);border-radius:18px;padding:8px 12px;background:var(--card);color:var(--tx);font:inherit;font-size:14.5px;cursor:pointer;text-align:left}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.other{margin-top:6px}
+.files .f{font-size:14px;padding:4px 0}
+.btn{font:inherit;font-weight:600;border:0;border-radius:9px;padding:12px 14px;background:var(--g);color:#fff;cursor:pointer}
+.btn.sec{background:var(--g2);color:var(--tx);border:1px solid var(--bd)}
+.btn.warn{background:var(--warn)}
+.btn:disabled{opacity:.5}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--bd);padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;z-index:6}
+.bar .btn{flex:1;font-size:15px;padding:12px 6px}
+.item{border:1px solid var(--bd);border-radius:9px;padding:8px 10px;margin:8px 0}
+.item .hd{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:4px}
+.item .q{padding:6px 0;border:0}
+.item .pair{border:0}
+.muted{color:var(--mu);font-size:14px}
+.ok{background:var(--g2);border-left:4px solid var(--g);padding:10px 12px;border-radius:6px;margin:10px 0}
+.err{border-left:4px solid var(--warn);padding:10px 12px;border-radius:6px;margin:10px 0;background:var(--card)}
+.priv{display:flex;gap:10px;align-items:flex-start;margin:12px 0;font-size:14.5px}
+.priv input{width:22px;height:22px;flex:none;margin-top:2px}
+.hidden{display:none!important}
+#toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%);background:#222;color:#fff;padding:8px 14px;border-radius:18px;font-size:14px;opacity:0;transition:opacity .3s;z-index:9;max-width:90vw}
+#toast.on{opacity:.92}
+#print{display:none}
+@media print{
+  @page{size:A4;margin:14mm 13mm 16mm}
+  body{background:#fff;color:#000;padding:0;font:10pt/1.35 Arial,sans-serif}
+  header,main,.bar,#toast{display:none!important}
+  #print{display:block}
+  #print h1{font-size:15pt;color:#2F5D50;margin:0}
+  #print .sub{font-size:9pt;color:#444;border-bottom:2px solid #2F5D50;padding-bottom:5px;margin-bottom:8px}
+  #print h2{font-size:11pt;background:#2F5D50;color:#fff;padding:3px 7px;margin:10px 0 4px;break-after:avoid}
+  #print table{width:100%;border-collapse:collapse;font-size:9pt}
+  #print td,#print th{border:0.6pt solid #999;padding:3px 5px;vertical-align:top;text-align:left}
+  #print td.q{width:45%;color:#333}
+  #print th{background:#EEF4F1}
+  #print tr{break-inside:avoid}
+  #print .foot{font-size:8pt;color:#555;margin-top:12px}
+}
+</style>
+</head><body>
+<header><div class="t">Calmea · upitnik prije obilaska</div><div class="s" id="hS">HACCP + oznake kvalitete</div></header>
+<main>
+  <section id="vMsg" class="card pad"><p class="muted">Učitavanje…</p></section>
+  <section id="vForm" class="hidden"></section>
+</main>
+<div class="bar hidden" id="bar">
+  <button class="btn sec" id="bPdf">PDF kopija</button>
+  <button class="btn" id="bSend">Pošalji Calmei</button>
+</div>
+<div id="print"></div>
+<div id="toast"></div>
+<script>
+const D = {"verzija": "P-1.2 (14.10.2026.)", "url": "https://nxgqrfumhbohrsbujoyc.supabase.co", "key": "sb_publishable_W4R_CP-vy6Kclv7VqH3OIA_Iz9YGq06", "sekcije": [{"t": "Vi i vaš objekt", "uvod": "", "items": [{"k": "SUBJEKT_NAZIV", "q": "Naziv OPG-a / obrta / tvrtke", "t": "txt", "o": [], "ex": "OPG Ivo Ivić"}, {"k": "SUBJEKT_OIB", "q": "OIB subjekta", "t": "txt", "o": [], "ex": "12345678901"}, {"k": "SUBJEKT_ADRESA", "q": "Adresa (sjedište)", "t": "txt", "o": [], "ex": "Ulica 1, 23250 Pag"}, {"k": "ODGOVORNA_OSOBA", "q": "Odgovorna osoba (vlasnik / direktor)", "t": "txt", "o": [], "ex": "Ivo Ivić"}, {"k": "KONTAKT_TEL", "q": "Telefon", "t": "txt", "o": [], "ex": "091 000 0000"}, {"k": "KONTAKT_EMAIL", "q": "E-mail", "t": "txt", "o": [], "ex": "ivo@primjer.hr"}, {"k": "KONTAKT_NACIN", "q": "Kako vas je najlakše kontaktirati", "t": "opt", "o": ["WhatsApp", "E-mail", "Telefon"], "ex": "WhatsApp"}, {"k": "OBJEKT_NAZIV", "q": "Naziv sirane (ako je drugačiji)", "t": "txt", "o": [], "ex": "Sirana Ivić"}, {"k": "OBJEKT_ADRESA", "q": "Adresa sirane (ako je drugačija)", "t": "txt", "o": [], "ex": "Polje bb, 23250 Pag"}, {"k": "OBJEKT_STATUS", "q": "Sirana (SPH – subjekt u poslovanju s hranom) je", "t": "opt", "o": ["Obiteljska mini sirana – samo vlastito mlijeko (odobrena pod posebnim uvjetima, „R-broj”)", "Odobrena – mali kapacitet (EU broj, mjere prilagodbe NN 65/2025)", "Odobrena (EU broj)", "Uvjetno odobrena (3 + 3 mjeseca)", "Ne znam"], "ex": "Odobren (EU broj)"}, {"k": "OBJEKT_BROJ", "q": "Broj odobrenja – veterinarski kontrolni broj", "t": "txt", "o": [], "ex": "HR 1234 EU"}, {"k": "EKO", "q": "Ekološka proizvodnja?", "t": "dn", "o": ["DA", "NE"], "ex": "NE"}], "prikaz": "sve", "ako": null}, {"t": "Mlijeko", "uvod": "", "items": [{"k": "MLIJEKO_VRSTA", "q": "Vrsta mlijeka", "t": "opt", "o": ["Ovčje", "Kozje", "Kravlje", "Miješano"], "ex": "Ovčje"}, {"k": "MLIJEKO_PODRIJETLO", "q": "Podrijetlo mlijeka", "t": "opt", "o": ["Vlastita farma", "Otkup od proizvođača", "Vlastita farma i otkup"], "ex": "Vlastita farma"}, {"k": "STADO_BROJ", "q": "Koliko grla muzete (i koliko ih imate ukupno)", "t": "txt", "o": [], "ex": "120 / 180"}, {"k": "STADO_PASMINA", "q": "Pasmina", "t": "txt", "o": [], "ex": "Paška ovca"}, {"k": "MUZNJA", "q": "Način mužnje", "t": "opt", "o": ["Ručno", "Muzni uređaj (kanta)", "Izmuzište s mljekovodom"], "ex": "Muzni uređaj (kanta)"}, {"k": "MUZNJA_DNEVNO", "q": "Koliko mjeseci traje mužnja i u kojim mjesecima", "t": "txt", "o": [], "ex": "6 mj.; siječanj–lipanj"}, {"k": "MLIJEKO_L_GOD", "q": "Koliko mlijeka prerađujete godišnje (litara, otprilike)", "t": "txt", "o": [], "ex": "15000"}, {"k": "MLIJEKO_L_DAN", "q": "Najviše mlijeka u jednom danu (L)", "t": "txt", "o": [], "ex": "200", "par": {"k": "MLIJEKO_L_DAN_PROSJEK", "q": "Prosječno mlijeka dnevno (L)", "t": "txt", "o": [], "ex": "250"}}, {"k": "KOOP_BROJ", "q": "Od koliko proizvođača otkupljujete mlijeko (0 ako ne otkupljujete)", "t": "txt", "o": [], "ex": "0"}, {"k": "MLIJEKO_HLADENJE", "q": "Hladite li mlijeko prije prerade (laktofriz)?", "t": "dn", "o": ["DA", "NE"], "ex": "NE"}, {"k": "LAKTOFRIZ", "q": "Laktofriz: koliko litara i na koliko °C hladi", "t": "txt", "o": [], "ex": "500 L / 4 °C", "ako": ["MLIJEKO_HLADENJE", "je", "DA"]}, {"k": "MLIJEKO_VRIJEME", "q": "Koliko sati prođe od mužnje do početka prerade", "t": "txt", "o": [], "ex": "1"}, {"k": "ANALIZE_MLIJEKA", "q": "Koliko često HAPIH (SLKM) analizira vaše sirovo mlijeko", "t": "opt", "o": ["Mjesečno", "2× mjesečno", "Rjeđe od mjesečno", "Ne analizira se"], "ex": "HAPIH – SLKM, mjesečno"}], "prikaz": "sve", "ako": null}, {"t": "Što proizvodite", "uvod": "Označite sve što radite — za svaku vrstu otvorit će se kratki niz pitanja (različiti su režimi prerade).", "items": [{"k": "PROIZVODNJA", "q": "Što proizvodite", "t": "multi", "o": ["Sir", "Skuta", "Fermentirani proizvodi", "Mlijeko (konzumno)", "Sirutka (napitak)"], "ex": "Sir, Skuta"}], "prikaz": "sve", "ako": null}, {"t": "Proizvodnja — sir", "uvod": "", "items": [{"k": "SIR_TIP", "q": "Koji tip sira proizvodite", "t": "multi", "o": ["Tvrdi", "Polutvrdi", "Meki", "Svježi"], "ex": "Tvrdi"}, {"k": "OBRADA", "q": "Toplinska obrada mlijeka prije sirenja", "t": "opt", "o": ["Sirovo mlijeko", "Termizacija", "Pasterizacija u kotlu", "Pasterizacija – pločasti pasterizator"], "ex": "Termizacija"}, {"k": "OBRADA_REZIM", "q": "Temperaturni režim i trajanje", "t": "txt", "o": [], "ex": "65 °C / 30 s", "ako": ["OBRADA", "nije", ["", "Sirovo mlijeko"]]}, {"k": "TEMP_SIRENJA", "q": "Na kojoj temperaturi sirite mlijeko (°C)", "t": "txt", "o": [], "ex": "32 °C"}, {"k": "SALAMURA", "q": "Solite li sir u salamuri?", "t": "dn", "o": ["DA", "NE"], "ex": "NE"}, {"k": "ZRIONA", "q": "Gdje sir zrije", "t": "opt", "o": ["Nema", "Klimatizirana komora", "Konoba / podrum (tradicionalno)"], "ex": "Konoba / podrum (tradicionalno)"}, {"k": "REZANJE", "q": "Režete li sir na komade za prodaju?", "t": "dn", "o": ["DA", "NE"], "ex": "NE"}, {"k": "VAKUUM", "q": "Pakirate li sir u vakuum?", "t": "dn", "o": ["DA", "NE"], "ex": "DA"}], "prikaz": "sve", "ako": ["PROIZVODNJA", "ima", "Sir"]}, {"t": "Proizvodnja — skuta", "uvod": "", "items": [{"k": "SKUTA_TEMP", "q": "Na koju temperaturu zagrijavate sirutku za skutu (°C)", "t": "txt", "o": [], "ex": "90 °C"}, {"k": "SKUTA_PAKIRANJE", "q": "Kako pakirate skutu", "t": "multi", "o": ["Najlonska vrećica", "Posuda / čaša", "Vakuum", "Rinfuza"], "ex": "Najlonska vrećica"}, {"k": "SKUTA_ROK", "q": "Rok trajanja skute (dana)", "t": "txt", "o": [], "ex": "7"}], "prikaz": "sve", "ako": ["PROIZVODNJA", "ima", "Skuta"]}, {"t": "Proizvodnja — fermentirani proizvodi", "uvod": "", "items": [{"k": "FE_VRSTE", "q": "Koje fermentirane proizvode radite", "t": "multi", "o": ["Jogurt", "Kiselo mlijeko", "Kefir", "Vrhnje", "Ostalo"], "ex": "Jogurt"}, {"k": "FE_REZIM", "q": "Temperaturni režim i trajanje toplinske obrade mlijeka", "t": "txt", "o": [], "ex": "90 °C / 1 min"}, {"k": "FE_FERMENTACIJA", "q": "Temperatura i trajanje fermentacije", "t": "txt", "o": [], "ex": "42 °C / 5 h"}, {"k": "FE_DODACI_OPIS", "q": "Dodaci (voće, med…)", "t": "txt", "o": [], "ex": "voćni pripravak"}, {"k": "FE_PUNJENJE", "q": "U što punite", "t": "multi", "o": ["Čaša", "Boca", "Kanta / rinfuza"], "ex": "Čaša"}], "prikaz": "sve", "ako": ["PROIZVODNJA", "ima", "Fermentirani"]}, {"t": "Proizvodnja — mlijeko (konzumno)", "uvod": "", "items": [{"k": "ML_REZIM", "q": "Temperaturni režim i trajanje", "t": "txt", "o": [], "ex": "72 °C / 15 s"}, {"k": "ML_PUNJENJE", "q": "U što punite", "t": "multi", "o": ["Boca", "Vrećica", "Rinfuza / mljekomat"], "ex": "Boca"}, {"k": "ML_ROK", "q": "Rok trajanja (dana)", "t": "txt", "o": [], "ex": "5"}], "prikaz": "sve", "ako": ["PROIZVODNJA", "ima", "Mlijeko"]}, {"t": "Proizvodnja — sirutka (napitak)", "uvod": "", "items": [{"k": "SI_REZIM", "q": "Temperaturni režim i trajanje", "t": "txt", "o": [], "ex": "72 °C / 15 s"}, {"k": "SI_PUNJENJE", "q": "U što punite", "t": "multi", "o": ["Boca", "Vrećica", "Rinfuza"], "ex": "Boca"}, {"k": "SI_ROK", "q": "Rok trajanja (dana)", "t": "txt", "o": [], "ex": "5"}], "prikaz": "sve", "ako": ["PROIZVODNJA", "ima", "Sirutka"]}, {"t": "@PROIZVODI", "uvod": "Upišite svaki proizvod koji radite (sir, skuta, jogurt…). Dovoljno je ono što znate.", "items": [], "prikaz": "sve", "ako": null}, {"t": "Ljudi", "uvod": "", "items": [{"k": "ZAPOSLENI", "q": "Koliko osoba radi u proizvodnji (s vama)", "t": "txt", "o": [], "ex": "2"}, {"k": "ZAP_POPIS", "q": "Tko radi u proizvodnji (ime – posao, stalno ili sezonski)", "t": "long", "o": [], "ex": "Ana Ivić – sirarica, stalno"}, {"k": "VHT", "q": "Tko je voditelj HACCP tima (ime, struka)", "t": "txt", "o": [], "ex": "Ivo Ivić"}, {"k": "ZDRAV_DATUM", "q": "Kada su bili zadnji zdravstveni pregledi (sanitarne iskaznice)", "t": "txt", "o": [], "ex": "03/2026"}, {"k": "HIG_MINIMUM", "q": "Tko ima tečaj higijenskog minimuma i kada je položen", "t": "txt", "o": [], "ex": "Ana, Ivo – 2023."}, {"k": "EDUKACIJA_REDOVITO", "q": "Provodite li redovito edukacije zaposlenika", "t": "opt", "o": ["Da, redovito", "Povremeno", "Ne"], "ex": "Da, redovito"}, {"k": "EDUKACIJA_UCESTALOST", "q": "Koliko često", "t": "opt", "o": ["1× godišnje", "1× u 2 godine", "Rjeđe"], "ex": "1× godišnje", "ako": ["EDUKACIJA_REDOVITO", "nije", ["", "Ne"]]}], "prikaz": "sve", "ako": null}, {"t": "Prodaja", "uvod": "Možete označiti više odgovora.", "items": [{"k": "TRZISTE", "q": "Gdje prodajete", "t": "multi", "o": ["Kućni prag / OPG", "Tržnice i sajmovi", "Lokalna maloprodaja i ugostitelji", "Trgovački lanci u HR", "Izvoz", "Paketna dostava"], "ex": "Kućni prag / OPG"}, {"k": "TRANSPORT", "q": "Kako proizvodi dolaze do kupca", "t": "multi", "o": ["Kupac preuzima u objektu", "Vlastito vozilo bez hlađenja (izotermno)", "Vlastito hlađeno vozilo", "Vanjski prijevoznik"], "ex": "Kupac preuzima u objektu"}], "prikaz": "sve", "ako": null}, {"t": "Promjene od zadnjeg HACCP-a", "uvod": "Samo ako već imate HACCP. Što se promijenilo otkad je dokumentacija napisana?", "items": [{"k": "REV_PROIZVODI", "q": "Novi ili ukinuti proizvodi; promjena recepta, pakiranja ili roka trajanja", "t": "long", "o": [], "ex": "skuta od 2025.; vakuum za mladi sir"}, {"k": "REV_OPREMA", "q": "Nova oprema ili preuređenje prostora", "t": "long", "o": [], "ex": "novi kotao 2024."}, {"k": "REV_DOBAVLJACI", "q": "Novi dobavljači (kulture, ambalaža, sredstva za čišćenje, laboratorij, DDD) ili novi kupci", "t": "long", "o": [], "ex": ""}, {"k": "REV_OSOBLJE", "q": "Promjene ljudi (tko je sada voditelj HACCP-a)", "t": "txt", "o": [], "ex": ""}, {"k": "PROMJENE", "q": "Što planirate promijeniti (novi proizvod, oprema, veća proizvodnja)", "t": "long", "o": [], "ex": "skuta od 2027."}], "prikaz": "revizija", "ako": null}, {"t": "Dokumentacija, analize i nadzor", "uvod": "", "items": [{"k": "DOK_STANJE", "q": "Vaša HACCP dokumentacija je", "t": "opt", "o": ["Digitalna i ažurna", "Digitalna, ali zastarjela", "Samo papirnata, ažurna (prepisivanje)", "Papirnata i zastarjela", "Nema dokumentacije (ponuditi izradu novog HACCP-a)"], "ex": "Samo papirnata, ažurna (prepisivanje)"}, {"k": "DOK_IZRADIO", "q": "Tko vam je izradio HACCP i kada", "t": "txt", "o": [], "ex": "savjetnik X, 2019."}, {"k": "DOK_FORMAT", "q": "Dokumentaciju vodite", "t": "opt", "o": ["Papir (registrator)", "Word / Excel", "Aplikacija", "Kombinirano"], "ex": "Papir (registrator)"}, {"k": "DOK_ZAPISI", "q": "Koje zapise stvarno vodite", "t": "multi", "o": ["Mužnja", "Održavanje izmuzišta", "Prijem mlijeka", "Termizacija / pasterizacija", "Salamura", "Zriona T/RVZ", "Hladnjaci", "Čišćenje", "DDD", "Edukacija", "Sljedivost / LOT", "Otprema / kupci", "Analize", "Korektivne mjere", "Pritužbe", "ZOI evidencije"], "ex": "Prijem, hladnjaci, čišćenje"}, {"k": "DOK_TKO_VODI", "q": "Tko piše zapise i kada (odmah, na kraju dana, naknadno)", "t": "txt", "o": [], "ex": "Ana, na kraju dana"}, {"k": "DOK_PROBLEMI", "q": "Što vam je u dokumentaciji najteže ili oduzima najviše vremena", "t": "long", "o": [], "ex": "prepisivanje, priprema za kontrolu"}, {"k": "VODA", "q": "Odakle je voda u sirani", "t": "opt", "o": ["Javni vodovod", "Vlastiti izvor / bunar", "Cisterna / spremnik"], "ex": "Javni vodovod"}, {"k": "VODA_ANALIZA", "q": "Zadnja analiza vode (kada, koji laboratorij)", "t": "txt", "o": [], "ex": "06/2026, ZZJZ, sukladno"}, {"k": "DDD_TVRTKA", "q": "Tko vam radi deratizaciju i dezinsekciju (DDD)", "t": "txt", "o": [], "ex": ""}, {"k": "LABORATORIJ", "q": "Koji laboratorij radi vaše analize", "t": "txt", "o": [], "ex": ""}, {"k": "ANALIZE_GOD", "q": "Koliko puta godišnje radite analize", "t": "txt", "o": [], "ex": "2×/god"}, {"k": "INSPEKCIJA_ZADNJA", "q": "Zadnja inspekcija: kada i je li bilo primjedbi", "t": "long", "o": [], "ex": "04/2026, bez nalaza"}, {"k": "INSPEKCIJA_DOK", "q": "Priložite zapisnik zadnje inspekcije ili drugi dokument (PDF ili fotografija)", "t": "file", "o": [], "ex": "zapisnik_2026.pdf"}, {"k": "PRITUZBE", "q": "Pritužbe kupaca ili povlačenje proizvoda u zadnje 3 godine", "t": "txt", "o": [], "ex": "nema"}], "prikaz": "sve", "ako": null}, {"t": "Oznake kvalitete", "uvod": "", "items": [{"k": "OZNAKA_EU", "q": "Posjeduje li vaš proizvod europsku oznaku kvalitete?", "t": "multi", "o": ["ZOI – zaštićena oznaka izvornosti", "ZOZP – zaštićena oznaka zemljopisnog podrijetla", "ZTS – zajamčeno tradicionalni specijalitet", "Nema"], "ex": "ZOI – zaštićena oznaka izvornosti"}, {"k": "OZNAKA_RH", "q": "Posjedujete li neku od RH oznaka kvalitete?", "t": "txt", "o": [], "ex": "Dokazana kvaliteta"}, {"k": "ZOI_STATUS", "q": "Paški sir (ZOI) — vaš status", "t": "opt", "o": ["Korisnik oznake (certificiran)", "U postupku certifikacije", "Nije u sustavu ZOI"], "ex": "Korisnik oznake (certificiran)", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_ULOGA", "q": "Vi ste", "t": "multi", "o": ["Proizvođač sira", "Proizvođač mlijeka", "Proizvođač hrane za životinje"], "ex": "Proizvođač sira, proizvođač mlijeka", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_POTVRDA", "q": "Broj potvrde o sukladnosti i do kada vrijedi", "t": "txt", "o": [], "ex": "1562-…; 6.4.2026.–5.4.2027.", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_POTVRDA_IZDAO", "q": "Tko je izdao potvrdu", "t": "txt", "o": [], "ex": "…", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_SIFRA", "q": "Vaša šifra kod kontrolnog tijela", "t": "txt", "o": [], "ex": "O-19-587", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_MARKICE_EVID", "q": "Kako vodite evidenciju utroška markica", "t": "opt", "o": ["Papir", "Excel", "Kombinacija", "Ne vodi se"], "ex": "Papir", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_IZLAZ_EVID", "q": "Kako vodite evidenciju prodaje (izlaza) sira", "t": "opt", "o": ["Papir", "Excel", "Kombinacija", "Ne vodi se"], "ex": "Ne vodi se", "ako": ["OZNAKA_EU", "ima", "ZOI"]}, {"k": "ZOI_KOLUTI", "q": "Koliko ste koluta napravili prošle godine / koliko prodali kao Paški sir", "t": "txt", "o": [], "ex": "130 / 127", "ako": ["OZNAKA_EU", "ima", "ZOI"]}], "prikaz": "sve", "ako": null}, {"t": "Digitalno vođenje", "uvod": "Razmišljamo o vođenju evidencija na mobitelu umjesto na papiru.", "items": [{"k": "DIG_INTERNET", "q": "Internet u sirani", "t": "opt", "o": ["Pouzdan (Wi-Fi / kabel)", "Samo mobilni signal", "Slab / povremen", "Nema"], "ex": "Samo mobilni signal"}, {"k": "DIG_UREDAJI", "q": "Što koristite", "t": "multi", "o": ["Pametni telefon", "Tablet", "Računalo / laptop", "Pisač"], "ex": "Pametni telefon, laptop"}, {"k": "DIG_KORISNICI", "q": "Tko bi upisivao podatke na mobitel (koliko osoba, snalaze li se)", "t": "txt", "o": [], "ex": "2 osobe, dobro"}, {"k": "DIG_INTERES", "q": "Biste li evidencije vodili na mobitelu", "t": "opt", "o": ["Da – pilot", "Možda – kasnije", "Ne"], "ex": "Da – pilot"}, {"k": "DIG_ARHIVA", "q": "Želite li da Calmea digitalno čuva vašu dokumentaciju", "t": "opt", "o": ["Da", "Možda", "Ne"], "ex": "Da", "nap": "Dokumentacija ostaje vaša: kod Calmee je samo na čuvanju (poslužitelj u EU), ne dajemo je nikome, a na vaš zahtjev vraćamo je ili izdajemo (npr. za inspekciju)."}], "prikaz": "sve", "ako": null}, {"t": "Pripremite za obilazak", "uvod": "Označite što možete pripremiti — tako će obilazak biti kraći.", "items": [{"k": "PRED_PRIPREMA", "q": "Što ćete pripremiti za obilazak", "t": "multi", "o": ["Postojeći HACCP", "Zapisi zadnjih 12 mj.", "Analize", "Rješenje o registraciji / odobrenju", "ZOI liste i evidencije", "Potvrda o sukladnosti", "Tlocrt"], "ex": ""}], "prikaz": "sve", "ako": null}, {"t": "Napomene", "uvod": "", "items": [{"k": "PRED_NAPOMENA", "q": "Ima li nešto što želite da znamo ili pitanje za nas?", "t": "long", "o": [], "ex": ""}], "prikaz": "sve", "ako": null}], "proizvod_polja": [["naziv", "Naziv proizvoda", "txt", []], ["modul", "Vrsta proizvoda", "opt", ["TS – Tvrdi / polutvrdi zreli sir", "SK – Skuta", "SI – Sirutka (napitak)", "SV – Svježi / meki sir", "FE – Fermentirani proizvodi", "ML – Mlijeko (napitak)", "DO – Proizvodi s dodacima"]], ["mlijeko", "Vrsta mlijeka", "opt", ["Ovčje", "Kozje", "Kravlje", "Miješano"]], ["zrenje", "Koliko dugo zrije (dana)", "num", []], ["rok", "Rok trajanja (dana)", "num", []], ["pakiranje", "Pakiranje (više odabira)", "multi", ["Cijeli komad bez ambalaže", "Vakuum", "Folija / papir", "Posuda / čaša", "Boca", "Rinfuza", "Najlonska vrećica"]], ["kolicina_kom", "Koliko tjedno proizvedete (kom / kolutova)", "txt", []], ["kolicina_kg", "kg (ili L)", "txt", []], ["napomena", "Napomena", "txt", []]]};
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(t){ const e=$("#toast"); e.textContent=t; e.classList.add("on"); setTimeout(()=>e.classList.remove("on"),2600); }
+const KOD = new URLSearchParams(location.search).get("k") || "";
+const SKEY = "calmea_pred_" + KOD;
+const MAX_MB = 10;
+let P = null;          // pozivnica {sirana, vrsta, vrijedi, vec_poslano}
+let cur = null;        // odgovori klijenta
+
+async function rpc(fn, body){
+  const r = await fetch(`${D.url}/rest/v1/rpc/${fn}`, {method:"POST", headers:{"apikey":D.key, "Content-Type":"application/json"}, body:JSON.stringify(body)});
+  const j = await r.json().catch(()=>null);
+  if(!r.ok) throw new Error((j && j.message) || ("Greška " + r.status));
+  return j;
+}
+function msg(html){ $("#vMsg").innerHTML = html; $("#vMsg").classList.remove("hidden"); }
+function load(){ try{ return JSON.parse(localStorage.getItem(SKEY)); }catch(e){ return null; } }
+function save(){ try{ cur.izmijenjeno = new Date().toISOString(); localStorage.setItem(SKEY, JSON.stringify(cur)); }catch(e){} }
+
+// ---------- uvjeti prikaza (grananje)
+const vals = k => String(cur.odgovori[k] || "").split(",").map(x => x.trim()).filter(Boolean);
+function ok(a){
+  if(!a) return true;
+  const [k, op, v] = a, val = String(cur.odgovori[k] || "").trim();
+  if(op === "ima") return [].concat(v).some(x => vals(k).some(y => y.startsWith(x)));
+  if(op === "je") return val === v;
+  if(op === "nije") return !v.includes(val);
+  return true;
+}
+const vidljive = () => D.sekcije.filter(s => (s.prikaz === "sve" || P.vrsta !== "novi") && ok(s.ako));
+function refresh(){
+  document.querySelectorAll("[data-ako]").forEach(el => el.classList.toggle("hidden", !ok(JSON.parse(el.dataset.ako))));
+  document.querySelectorAll("[data-cnt]").forEach(el => el.upd && el.upd());
+}
+
+async function start(){
+  if(!KOD){ msg(`<h1>Upitnik prije obilaska</h1><p>Ovaj se upitnik otvara <b>osobnim linkom</b> koji vam je poslala Calmea.</p><p class="muted">Niste dobili link? Javite se: calmea.croatia@gmail.com · +385 91 124 6981</p>`); return; }
+  try{ const r = await rpc("provjeri_pozivnicu", {p_kod: KOD}); P = r && r[0]; }
+  catch(e){ msg(`<h1>Veza nije uspjela</h1><p>Provjerite internet i osvježite stranicu.</p><p class="muted">${esc(e.message)}</p>`); return; }
+  if(!P || !P.vrijedi){ msg(`<h1>Link nije valjan</h1><p>Link je istekao ili nije ispravan. Javite se Calmei za novi link.</p><p class="muted">calmea.croatia@gmail.com · +385 91 124 6981</p>`); return; }
+  cur = load() || {odgovori:{OBJEKT_NAZIV: P.sirana}, proizvodi:[], poslano:null};
+  $("#hS").textContent = P.sirana;
+  msg(`<h1>Dobro došli</h1>
+    <p>Ovim upitnikom pripremamo ${P.vrsta==="novi" ? "izradu vašeg HACCP sustava" : "reviziju vašeg HACCP sustava"} (s oznakama kvalitete, npr. Paški sir). Što više znamo unaprijed, to je obilazak kraći.</p>
+    <ul class="muted" style="padding-left:18px;margin:6px 0">
+      <li>Treba oko 15–20 minuta. <b>Ništa nije obavezno</b> — preskočite što ne znate.</li>
+      <li>Dio pitanja pojavljuje se tek prema vašim odgovorima (npr. ako radite sir ili jogurt).</li>
+      <li>Odgovori se spremaju na ovom uređaju: možete stati i nastaviti kasnije istim linkom.</li>
+      <li>Na kraju kliknite <b>Pošalji Calmei</b>. Možete i spremiti <b>PDF kopiju</b> za sebe.</li>
+    </ul>
+    ${(P.vec_poslano || cur.poslano) ? `<div class="ok">Upitnik je već poslan${cur.poslano ? " " + new Date(cur.poslano).toLocaleString("hr-HR") : ""}. Možete ga dopuniti i poslati ponovno.</div>` : ""}`);
+  openForm();
+}
+
+function openForm(){
+  const f = $("#vForm"); f.innerHTML = ""; f.classList.remove("hidden"); $("#bar").classList.remove("hidden");
+  let first = true;
+  D.sekcije.filter(s => s.prikaz === "sve" || P.vrsta !== "novi").forEach(s => { const c = section(s, first); first = false; f.append(c); });
+  f.append(sendCard()); refresh();
+}
+function card(title, inner, open){
+  const c = document.createElement("details"); c.className="card"; if(open) c.open = true;
+  const sm = document.createElement("summary"); sm.innerHTML = `<span>${esc(title)}</span><span class="cnt"></span>`;
+  const b = document.createElement("div"); b.className="body"; inner(b); c.append(sm,b); return c;
+}
+function section(s, open){
+  const c = s.t==="@PROIZVODI" ? listCard("Vaši proizvodi", s.uvod, open) :
+    card(s.t, b => { if(s.uvod){ const u=document.createElement("div"); u.className="uvod"; u.textContent=s.uvod; b.append(u); }
+      s.items.forEach(it => b.append(row(it))); }, open);
+  if(s.ako) c.dataset.ako = JSON.stringify(s.ako);
+  if(s.t!=="@PROIZVODI"){
+    c.dataset.cnt = 1;
+    c.upd = () => { const its = s.items.filter(it => ok(it.ako)); const n = its.filter(it => String(cur.odgovori[it.k]||"").trim()).length;
+                    c.querySelector(".cnt").textContent = `${n}/${its.length}`; };
+  }
+  return c;
+}
+function row(it){
+  let el;
+  if(it.par){ el = document.createElement("div"); el.className = "pair"; el.append(field(it, cur.odgovori, refresh), field(it.par, cur.odgovori, refresh)); }
+  else el = field(it, cur.odgovori, refresh);
+  if(it.ako) el.dataset.ako = JSON.stringify(it.ako);
+  return el;
+}
+function field(it, obj, onch){
+  const w = document.createElement("div"); w.className="q";
+  const id = "f_" + it.k + "_" + Math.random().toString(36).slice(2,7);
+  w.innerHTML = `<label class="ql" for="${id}">${esc(it.q)}</label>`;
+  const set = v => { obj[it.k] = v; save(); onch && onch(); };
+  const v0 = obj[it.k] ?? "";
+  if(it.t==="txt"||it.t==="num"){ const i=document.createElement("input"); i.type= it.t==="num"?"number":"text"; i.id=id; i.value=v0; if(it.t==="num") i.inputMode="numeric"; i.oninput=()=>set(i.value); w.append(i); }
+  else if(it.t==="long"){ const i=document.createElement("textarea"); i.id=id; i.value=v0; i.oninput=()=>set(i.value); w.append(i); }
+  else if(it.t==="opt"||it.t==="dn"){
+    const ch=document.createElement("div"); ch.className="chips"; const oth=document.createElement("input"); oth.type="text"; oth.placeholder="nešto drugo…"; oth.className="other";
+    const isOpt = it.o.includes(v0);
+    it.o.forEach(o=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"+(v0===o?" on":""); b.textContent=o;
+      b.onclick=()=>{ const on=!b.classList.contains("on"); ch.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); if(on) b.classList.add("on"); oth.value=""; set(on?o:""); }; ch.append(b); });
+    w.append(ch);
+    if(it.t==="opt"){ oth.value = (!isOpt && v0) ? v0 : ""; oth.oninput=()=>{ ch.querySelectorAll(".chip").forEach(x=>x.classList.remove("on")); set(oth.value); }; w.append(oth); }
+  }
+  else if(it.t==="multi"){
+    const cur0 = String(v0).split(",").map(x=>x.trim()).filter(Boolean);
+    const ch=document.createElement("div"); ch.className="chips"; const oth=document.createElement("input"); oth.type="text"; oth.placeholder="nešto drugo…"; oth.className="other";
+    oth.value = cur0.filter(x=>!it.o.includes(x)).join(", ");
+    const upd=()=>{ const sel=[...ch.querySelectorAll(".chip.on")].map(b=>b.textContent); if(oth.value.trim()) sel.push(oth.value.trim()); set(sel.join(", ")); };
+    it.o.forEach(o=>{ const b=document.createElement("button"); b.type="button"; b.className="chip"+(cur0.includes(o)?" on":""); b.textContent=o; b.onclick=()=>{b.classList.toggle("on"); upd();}; ch.append(b); });
+    oth.oninput=upd; w.append(ch, oth);
+  }
+  else if(it.t==="file") fileField(it, obj, w, set);
+  if(it.ex && ["txt","num","long"].includes(it.t)) { const e=document.createElement("div"); e.className="ex"; e.textContent="npr. "+it.ex; w.append(e); }
+  if(it.nap) { const e=document.createElement("div"); e.className="nap"; e.textContent=it.nap; w.append(e); }
+  return w;
+}
+
+// ---------- prilozi (Supabase Storage, bucket 'dokumenti', mapa = kod pozivnice)
+function fileField(it, obj, w, set){
+  const list = document.createElement("div"); list.className = "files";
+  const names = () => String(obj[it.k] || "").split(";").map(x=>x.trim()).filter(Boolean);
+  const draw = () => { list.innerHTML = names().map(n => `<div class="f">📎 ${esc(n.replace(/^\d+_/, ""))} ✔</div>`).join(""); };
+  const inp = document.createElement("input"); inp.type = "file"; inp.multiple = true; inp.accept = ".pdf,image/*"; inp.className = "hidden";
+  const btn = document.createElement("button"); btn.type = "button"; btn.className = "btn sec"; btn.style.width = "100%"; btn.textContent = "+ Priloži datoteku";
+  btn.onclick = () => inp.click();
+  inp.onchange = async () => {
+    for(const f of inp.files){
+      if(f.size > MAX_MB*1024*1024){ toast(`${f.name}: veće od ${MAX_MB} MB`); continue; }
+      btn.disabled = true; btn.textContent = "Šaljem " + f.name + "…";
+      try{ const n = await upload(f); set(names().concat(n).join("; ")); draw(); toast("Priloženo ✔"); }
+      catch(e){ toast("Prilog nije poslan: " + e.message); }
+    }
+    btn.disabled = false; btn.textContent = "+ Priloži datoteku"; inp.value = "";
+  };
+  draw(); w.append(list, btn, inp);
+  const e = document.createElement("div"); e.className = "ex"; e.textContent = `PDF ili fotografija, najviše ${MAX_MB} MB. Šalje se odmah (treba internet).`; w.append(e);
+}
+async function upload(file){
+  const safe = file.name.normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^A-Za-z0-9._-]+/g, "_").slice(-80);
+  const name = `${Date.now()}_${safe}`;
+  const r = await fetch(`${D.url}/storage/v1/object/dokumenti/${encodeURIComponent(KOD)}/${name}`,
+    {method:"POST", headers:{"apikey":D.key, "Content-Type": file.type || "application/octet-stream", "x-upsert":"false"}, body:file});
+  if(!r.ok){ const j = await r.json().catch(()=>null); throw new Error((j && (j.message || j.error)) || ("Greška " + r.status)); }
+  return name;
+}
+
+function listCard(title, uvod, open){
+  const c = card(title, b => {
+    const u=document.createElement("div"); u.className="uvod"; u.textContent=uvod; b.append(u);
+    const wrap=document.createElement("div"); b.append(wrap);
+    const P_ = D.proizvod_polja.map(([k,q,t,o]) => ({k,q,t,o,ex:""}));
+    const draw=()=>{ wrap.innerHTML=""; cur.proizvodi.forEach((obj,i)=>{ const it=document.createElement("div"); it.className="item";
+        const hd=document.createElement("div"); hd.className="hd"; hd.innerHTML=`<span>${i+1}. ${esc(obj.naziv||"")}</span>`;
+        const x=document.createElement("button"); x.className="btn warn"; x.style.padding="6px 10px"; x.textContent="✕";
+        x.onclick=()=>{ if(confirm("Ukloniti proizvod?")){ cur.proizvodi.splice(i,1); save(); draw(); cnt(); } }; hd.append(x); it.append(hd);
+        const on = () => { hd.firstChild.textContent=`${i+1}. ${obj.naziv||""}`; cnt(); };
+        P_.forEach(p => { if(p.k==="kolicina_kg") return;
+          if(p.k==="kolicina_kom"){ const pr=document.createElement("div"); pr.className="pair"; pr.append(field(p,obj,on), field(P_.find(z=>z.k==="kolicina_kg"),obj,on)); it.append(pr); }
+          else it.append(field(p, obj, on)); });
+        wrap.append(it); }); };
+    const add=document.createElement("button"); add.className="btn sec"; add.style.width="100%"; add.textContent="+ Dodaj proizvod";
+    add.onclick=()=>{ cur.proizvodi.push({}); save(); draw(); cnt(); wrap.lastChild && wrap.lastChild.scrollIntoView({behavior:"smooth"}); };
+    b.append(add); draw();
+  }, open);
+  const cnt=()=>{ c.querySelector(".cnt").textContent = cur.proizvodi.length; }; cnt(); return c;
+}
+function sendCard(){
+  const c = document.createElement("section"); c.className="card pad"; c.id="cSend";
+  c.innerHTML = `<h1 style="font-size:17px">Slanje</h1>
+    <label class="priv"><input type="checkbox" id="priv"><span>Pristajem da <b>Calmea</b> (obrt za usluge, proizvodnju i trgovinu) obrađuje podatke iz ovog upitnika i priložene dokumente <b>isključivo radi izrade ili revizije HACCP sustava</b> mog objekta i pripreme obilaska. Podaci se čuvaju u EU (Frankfurt), ne daju se trećima i mogu zatražiti njihovo brisanje na calmea.croatia@gmail.com.</span></label>
+    <button class="btn" id="bSend2" style="width:100%">Pošalji Calmei</button>
+    <div id="sRes"></div>`;
+  setTimeout(()=>{ $("#priv").checked = !!cur.privola; $("#priv").onchange = e => { cur.privola = e.target.checked; save(); }; $("#bSend2").onclick = posalji; });
+  return c;
+}
+// samo odgovori iz vidljivih pitanja (skrivene grane se ne šalju)
+function odgovoriZaSlanje(){
+  const out = {OBJEKT_NAZIV: cur.odgovori.OBJEKT_NAZIV || P.sirana};
+  vidljive().forEach(s => s.items.filter(it => ok(it.ako)).forEach(it => [it, it.par].filter(Boolean).forEach(x => {
+    const v = cur.odgovori[x.k]; if(String(v ?? "").trim()) out[x.k] = v; })));
+  if(String(out.OBJEKT_STATUS || "").startsWith("Odobrena – mali kapacitet")) out.MALI_KAPACITET = "DA";
+  return out;
+}
+const proizvodiZaSlanje = () => cur.proizvodi.filter(p => Object.values(p).some(v => String(v||"").trim()))
+  .map(p => Object.assign({}, p, {kolicina: [p.kolicina_kom && p.kolicina_kom + " kom", p.kolicina_kg && p.kolicina_kg + " kg"].filter(Boolean).join(" / ")}));
+async function posalji(){
+  if(!$("#priv").checked){ $("#cSend").scrollIntoView({behavior:"smooth"}); toast("Za slanje označite privolu."); return; }
+  const btns = [$("#bSend"), $("#bSend2")]; btns.forEach(b=>b.disabled=true);
+  const podaci = {format:"calmea-upitnik", izvor:"klijent", sirana:P.sirana, vrsta:P.vrsta, odgovori:odgovoriZaSlanje(),
+                  proizvodi:proizvodiZaSlanje(), dobavljaci:[], rizik:[null,null,null,null,null,null,null],
+                  verzija_obrasca:D.verzija, poslano:new Date().toISOString()};
+  try{
+    await rpc("posalji_upitnik", {p_kod:KOD, p_podaci:podaci, p_privola:true, p_verzija:D.verzija});
+    cur.poslano = podaci.poslano; save();
+    $("#sRes").innerHTML = `<div class="ok"><b>Hvala! Upitnik je poslan.</b><br>Javit ćemo vam se radi dogovora obilaska. Ako nešto dopunite, kliknite ponovno Pošalji.</div>`;
+    toast("Poslano ✔");
+  }catch(e){
+    $("#sRes").innerHTML = `<div class="err">Slanje nije uspjelo: ${esc(e.message)}<br>Odgovori su spremljeni na uređaju — pokušajte ponovno ili spremite PDF kopiju i pošaljite je mailom.</div>`;
+  }finally{ btns.forEach(b=>b.disabled=false); $("#sRes").scrollIntoView({behavior:"smooth"}); }
+}
+$("#bSend").onclick = () => { $("#cSend").scrollIntoView({behavior:"smooth"}); if($("#priv").checked) posalji(); else toast("Označite privolu pa pošaljite."); };
+
+$("#bPdf").onclick = () => {
+  const odg = odgovoriZaSlanje();
+  let h = `<h1>Upitnik prije obilaska — HACCP</h1><div class="sub">${esc(P.sirana)} · ${new Date().toLocaleDateString("hr-HR")} · Calmea · HACCP + oznake kvalitete</div>`;
+  vidljive().forEach(s => {
+    if(s.t==="@PROIZVODI"){ const pr = proizvodiZaSlanje(); if(!pr.length) return;
+      const cols = D.proizvod_polja.filter(p => !p[0].startsWith("kolicina_") && pr.some(o => String(o[p[0]]||"").trim()));
+      if(pr.some(o => o.kolicina)) cols.splice(cols.length - (cols.some(p=>p[0]==="napomena") ? 1 : 0), 0, ["kolicina", "Tjedno"]);
+      h += `<h2>Proizvodi</h2><table><tr>${cols.map(p=>`<th>${esc(p[1])}</th>`).join("")}</tr>` + pr.map(o=>"<tr>"+cols.map(p=>`<td>${esc(o[p[0]]||"")}</td>`).join("")+"</tr>").join("") + "</table>"; return; }
+    const rows = []; s.items.filter(it => ok(it.ako)).forEach(it => [it, it.par].filter(Boolean).forEach(x => { if(odg[x.k]) rows.push(x); }));
+    if(!rows.length) return;
+    h += `<h2>${esc(s.t)}</h2><table>` + rows.map(it=>`<tr><td class="q">${esc(it.q)}</td><td>${esc(it.t==="file" ? String(odg[it.k]).replace(/(^|; )\d+_/g,"$1") : odg[it.k]).replace(/\n/g,"<br>")}</td></tr>`).join("") + "</table>";
+  });
+  h += `<div class="foot">${cur.poslano ? "Poslano Calmei " + new Date(cur.poslano).toLocaleString("hr-HR") + ". " : ""}Podaci se koriste isključivo za izradu i reviziju HACCP sustava. Calmea · calmea.croatia@gmail.com · +385 91 124 6981</div>`;
+  $("#print").innerHTML = h; const t = document.title; document.title = "Upitnik_" + P.sirana.replace(/[^\p{L}\p{N}]+/gu,"_"); window.print(); setTimeout(()=>document.title=t, 1500);
+};
+start();
+</script>
+</body></html>
