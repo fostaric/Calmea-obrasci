@@ -301,8 +301,10 @@ function odgovoriZaSlanje(){
   if(String(out.OBJEKT_STATUS || "").startsWith("Odobrena – mali kapacitet")) out.MALI_KAPACITET = "DA";
   return out;
 }
+// jedinica se dodaje samo ako ju klijent nije već upisao (npr. „100-120kg”)
+const jed = (v, j) => { v = String(v || "").trim(); return !v ? "" : /[a-zA-Zčćšžđ]/i.test(v) ? v : v + " " + j; };
 const proizvodiZaSlanje = () => cur.proizvodi.filter(p => Object.values(p).some(v => String(v||"").trim()))
-  .map(p => Object.assign({}, p, {kolicina: [p.kolicina_kom && p.kolicina_kom + " kom", p.kolicina_kg && p.kolicina_kg + " kg"].filter(Boolean).join(" / ")}));
+  .map(p => Object.assign({}, p, {kolicina: [jed(p.kolicina_kom, "kom"), jed(p.kolicina_kg, "kg")].filter(Boolean).join(" / ")}));
 // ---------- PDF upitnika (isti kao „PDF kopija” klijenta) — napravi se u pregledniku i šalje uz upitnik
 function dokumentHtml(poslano){
   const odg = odgovoriZaSlanje();
